@@ -17,7 +17,7 @@ def canUnlockAll(boxes):
 
     for index, val in enumerate(boxes):
         # check if index box can't be unlocked
-        if index not in unlocked_set:
+        if index not in open_set:
             return False
 
         # add key indexes from unlocked box
