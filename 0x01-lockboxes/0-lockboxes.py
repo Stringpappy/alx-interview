@@ -1,34 +1,30 @@
 #!/usr/bin/python3
 """
-Solution to the lockboxes problem.
+    Modules thwt check Lockboxes 
 """
+
 
 def canUnlockAll(boxes):
     """
-    Determines whether a series of locked boxes can be opened
-    based on keys that can be attained.
-
-    Parameters:
-    boxes (List[List[int]]): A list of boxes, each containing a list of keys.
-
-    Returns:
-    bool: True if all boxes can be unlocked, False otherwise.
+        To open all boxes in the <F11>arr<F11>ay <F11>and return true if open
     """
-    if not isinstance(boxes, list) or len(boxes) == 0:
+    # check if boxes is empty
+    if len(boxes) == 0:
         return False
 
-    unlocked = [False] * len(boxes)  # Track which boxes are unlocked
-    unlocked[0] = True  # The first box is always unlocked
-    keys = boxes[0]  # Keys from the first box
+    unlocked_set = set()
+    unlocked_set.add(0)
 
-    for key in keys:
-        if key < len(boxes):
-            unlocked[key] = True  # Unlock the box using the key
+    for index, val in enumerate(boxes):
+        # check if index box can't be unlocked
+        if index not in unlocked_set:
+            return False
 
-    for i in range(len(boxes)):
-        if unlocked[i]:
-            for key in boxes[i]:
-                if key < len(boxes):
-                    unlocked[key] = True
+        # add key indexes from unlocked box
+        for value in val:
+            # go to each elem index and update the set
+            if value < len(boxes) and value > index:
+                unlocked_set.update(boxes[value])
+        unlocked_set.update(val)
 
-    return all(unlocked)  # Check if all boxes are unlocked
+    return True
