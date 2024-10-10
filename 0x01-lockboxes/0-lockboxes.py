@@ -1,19 +1,19 @@
 #!/usr/bin/python3
 """
-    Modules thwt check Lockboxes 
+    the Lockboxes
 """
 
 
 def canUnlockAll(boxes):
     """
-        To open all boxes in the <F11>arr<F11>ay <F11>and return true if open
+       To  Returns true if all box open
     """
     # check if boxes is empty
     if len(boxes) == 0:
         return False
 
-    unlocked_set = set()
-    unlocked_set.add(0)
+    open_set = set()
+    open_set.add(0)
 
     for index, val in enumerate(boxes):
         # check if index box can't be unlocked
@@ -24,7 +24,7 @@ def canUnlockAll(boxes):
         for value in val:
             # go to each elem index and update the set
             if value < len(boxes) and value > index:
-                unlocked_set.update(boxes[value])
-        unlocked_set.update(val)
+                open_set.update(boxes[value])
+        open_set.update(val)
 
     return True
