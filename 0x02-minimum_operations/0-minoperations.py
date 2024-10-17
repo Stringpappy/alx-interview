@@ -6,7 +6,7 @@ Minimum operations Module
 
 def minOperations(n: int) -> int:
     """
-    TO Calculate the fewest nuM of operations THAT IS 
+    TO Calculate the fewest nuM of operations THAT IS
     needed to result in exactly
     n 'H' characters in the file.
 
