@@ -1,17 +1,10 @@
-#!/usr/bin/python3import sys
+#!/usr/bin/python3
+"""log parsing"""
+import sys
 import re
 
 def main():
-    """
-    Main function to read log lines from standard input and compute metrics.
-    
-    This function initializes the necessary metrics for tracking the total
-    file size and counts of specific HTTP status codes. It processes each 
-    line of input, applying a regex pattern to validate and extract data.
-    Metrics are printed every 10 lines or after the first line, and also 
-    upon keyboard interruption (CTRL + C).
-    """
-    # Initialize metrics
+    """ Initialize metrics"""
     total_size = 0
     status_codes_count = {}
     line_count = 0
@@ -37,8 +30,8 @@ def main():
                 else:
                     status_codes_count[status_code] = 1
 
-            # Print metrics after every 10 lines or if it's the last line
-            if line_count % 10 == 0 or line_count == 1:
+            # Print metrics after every 10 lines
+            if line_count % 10 == 0:
                 print_metrics(total_size, status_codes_count)
 
     except KeyboardInterrupt:
@@ -46,17 +39,7 @@ def main():
         print_metrics(total_size, status_codes_count)
 
 def print_metrics(total_size, status_codes_count):
-    """
-    Print the accumulated metrics of file sizes and status code counts.
-
-    Args:
-        total_size (int): The total size of all files processed.
-        status_codes_count (dict): A dictionary containing counts of each
-                                    HTTP status code.
-    
-    This function outputs the total file size and the counts of HTTP 
-    status codes in ascending order.
-    """
+    """to print given"""
     print(f'Total file size: {total_size}')
     
     # Sorted status codes to print in ascending order
