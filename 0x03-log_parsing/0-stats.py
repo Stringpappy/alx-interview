@@ -1,65 +1,52 @@
 #!/usr/bin/python3
-'''A script for parsing HTTP request logs.
-'''
+'''Script to parse HTTP request logs.'''
 import re
 
 
-def parse_log_line(log_line):
-    '''Extracts sections of a line of an HTTP request log.
-    '''
-    pattern_parts = (
+def parse_log_line(line):
+    '''Extracts details from a log line.'''
+    fp = (
         r'\s*(?P<ip>\S+)\s*',
         r'\s*\[(?P<date>\d+\-\d+\-\d+ \d+:\d+:\d+\.\d+)\]',
         r'\s*"(?P<request>[^"]*)"\s*',
         r'\s*(?P<status_code>\S+)',
         r'\s*(?P<file_size>\d+)'
     )
-    metrics = {
+    info = {
         'status_code': 0,
         'file_size': 0,
     }
-    log_pattern = '{}\\-{}{}{}{}\\s*'.format(pattern_parts[0], pattern_parts[1], pattern_parts[2], pattern_parts[3], pattern_parts[4])
-    match_result = re.fullmatch(log_pattern, log_line)
-    if match_result is not None:
-        status_code = match_result.group('status_code')
-        file_size = int(match_result.group('file_size'))
-        metrics['status_code'] = status_code
-        metrics['file_size'] = file_size
-    return metrics
+    log_fmt = '{}\\-{}{}{}{}\\s*'.format(fp[0], fp[1], fp[2], fp[3], fp[4])
+    match = re.fullmatch(log_fmt, line)
+    if match is not None:
+        info['status_code'] = match.group('status_code')
+        info['file_size'] = int(match.group('file_size'))
+    return info
 
 
-def display_statistics(total_file_size, status_code_counts):
-    '''Prints the accumulated statistics of the HTTP request log.
-    '''
-    print('Total file size: {:d}'.format(total_file_size), flush=True)
-    for status_code in sorted(status_code_counts.keys()):
-        count = status_code_counts.get(status_code, 0)
+def display_stats(total_size, status_counts):
+    '''Prints the log statistics.'''
+    print('File size: {:d}'.format(total_size), flush=True)
+    for code in sorted(status_counts.keys()):
+        count = status_counts.get(code, 0)
         if count > 0:
-            print('{:s}: {:d}'.format(status_code, count), flush=True)
+            print('{:s}: {:d}'.format(code, count), flush=True)
 
 
-def increment_metrics(log_line, total_file_size, status_code_counts):
-    '''Updates the metrics from a given HTTP request log.
-
-    Args:
-        log_line (str): The line of input from which to retrieve the metrics.
-
-    Returns:
-        int: The new total file size.
-    '''
-    line_data = parse_log_line(log_line)
-    status_code = line_data.get('status_code', '0')
-    if status_code in status_code_counts.keys():
-        status_code_counts[status_code] += 1
-    return total_file_size + line_data['file_size']
+def update_stats(line, total_size, status_counts):
+    '''Updates stats from a log line.'''
+    line_info = parse_log_line(line)
+    status_code = line_info.get('status_code', '0')
+    if status_code in status_counts.keys():
+        status_counts[status_code] += 1
+    return total_size + line_info['file_size']
 
 
-def start_log_parser():
-    '''Starts the log parser.
-    '''
-    line_count = 0
-    total_file_size = 0
-    status_code_counts = {
+def main():
+    '''Runs the log parser.'''
+    line_num = 0
+    total_size = 0
+    status_counts = {
         '200': 0,
         '301': 0,
         '400': 0,
@@ -71,19 +58,15 @@ def start_log_parser():
     }
     try:
         while True:
-            log_line = input()
-            total_file_size = increment_metrics(
-                log_line,
-                total_file_size,
-                status_code_counts,
-            )
-            line_count += 1
-            if line_count % 10 == 0:
-                display_statistics(total_file_size, status_code_counts)
+            line = input()
+            total_size = update_stats(line, total_size, status_counts)
+            line_num += 1
+            if line_num % 10 == 0:
+                display_stats(total_size, status_counts)
     except (KeyboardInterrupt, EOFError):
-        display_statistics(total_file_size, status_code_counts)
+        display_stats(total_size, status_counts)
 
 
 if __name__ == '__main__':
-    start_log_parser()
+    main()
 
