@@ -1,9 +1,10 @@
 #!/usr/bin/python3
+"""log parsing"""
 import sys
 import re
 
 def main():
-    # Initialize metrics
+    """ Initialize metrics"""
     total_size = 0
     status_codes_count = {}
     line_count = 0
@@ -38,6 +39,7 @@ def main():
         print_metrics(total_size, status_codes_count)
 
 def print_metrics(total_size, status_codes_count):
+    """to print given"""
     print(f'Total file size: {total_size}')
     
     # Sorted status codes to print in ascending order
