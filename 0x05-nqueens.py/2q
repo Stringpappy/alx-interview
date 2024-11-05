@@ -53,7 +53,7 @@ def main():
         sys.exit(1)
     if n < 4:
         print("N must be at least 4")
-        sys.exit(1)
+        sys.exit(1) 
     """Solve the N-Queens problem"""
     solution = Solution()
     result = solution.solveNQueens(n)
