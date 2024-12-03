@@ -9,7 +9,8 @@ def island_perimeter(grid):
     The grid represents water by 0 and land by 1.
 
     Args:
-        grid (list of list of int): A grid where 1 represents land and 0 represents water.
+        grid (list of list of int): A grid where 1 represents
+        land and 0 represents water.
 
     Returns:
         int: The perimeter of the island defined in the grid.
@@ -32,5 +33,6 @@ def island_perimeter(grid):
                 if row > 0 and grid[row - 1][col] == 1:
                     adjacent_count += 1
 
-    # Calculate perimeter: each land cell contributes 4 sides minus twice the shared edges
+    # Calculate perimeter: each land cell
+    # contributes 4 sides minus twice the shared edges
     return land_count * 4 - adjacent_count * 2
