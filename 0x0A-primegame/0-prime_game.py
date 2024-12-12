@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """Module for Prime Game"""
 
+
 def isWinner(x, nums):
     """
     Determines the winner of a set of prime number removal games.
@@ -40,9 +41,12 @@ def isWinner(x, nums):
         return "Maria"
     return None
 
+
 def mark_non_primes(ls, x):
     """
-    Marks multiples of a given number as non-prime in the list of potential primes.
+    Marks multiples of a given number as non-prime in the
+
+    list of potential primes.
 
     Args:
         ls (list of int): An array representing potential prime numbers.
